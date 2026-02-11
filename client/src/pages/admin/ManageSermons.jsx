@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { getApiUrl } from '../../utils/api';
 
 function ManageSermons() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ function ManageSermons() {
     }
 
     try {
-        const response = await fetch('/api/sermons', {
+        const response = await fetch(getApiUrl('/api/sermons'), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

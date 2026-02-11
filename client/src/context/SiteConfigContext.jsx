@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { getApiUrl } from '../utils/api';
 
 const SiteConfigContext = createContext(null);
 
@@ -28,7 +29,7 @@ export const SiteConfigProvider = ({ children }) => {
   // Fetch Logic
   const fetchConfig = async () => {
     try {
-      const response = await fetch('/api/settings/public');
+      const response = await fetch(getApiUrl('/api/settings/public'));
       if (response.ok) {
         const data = await response.json();
         setConfig(data);

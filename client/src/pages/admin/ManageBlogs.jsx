@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { getApiUrl } from '../../utils/api';
 
 function ManageBlogs() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ function ManageBlogs() {
     }
 
     try {
-      const response = await fetch('/api/blogs', {
+      const response = await fetch(getApiUrl('/api/blogs'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

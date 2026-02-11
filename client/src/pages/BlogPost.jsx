@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Footer from '../components/Footer';
+import { getApiUrl } from '../utils/api';
 
 function BlogPost() {
   const { id } = useParams();
@@ -11,7 +12,7 @@ function BlogPost() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`/api/blogs/${id}`);
+        const response = await fetch(getApiUrl(`/api/blogs/${id}`));
         if (!response.ok) {
             throw new Error('Blog post not found');
         }

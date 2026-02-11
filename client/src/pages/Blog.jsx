@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
+import { getApiUrl } from '../utils/api';
 
 function Blog() {
   const [posts, setPosts] = useState([]);
@@ -9,7 +10,7 @@ function Blog() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('/api/blogs');
+        const response = await fetch(getApiUrl('/api/blogs'));
         const data = await response.json();
         setPosts(data);
       } catch (error) {

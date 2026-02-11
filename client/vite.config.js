@@ -12,8 +12,4 @@ export default defineConfig({
       },
     },
   },
-  // Expose env var for potential non-proxy usage if needed, though Vite does this automatically with import.meta.env
-  define: {
-    'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL)
-  }
 })

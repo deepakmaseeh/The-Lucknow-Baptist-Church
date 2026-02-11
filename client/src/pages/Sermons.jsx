@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import sermonHero from '../assets/sermon-hero.png';
+import { getApiUrl } from '../utils/api';
 
 function Sermons() {
   const [sermons, setSermons] = useState([]);
@@ -10,7 +11,7 @@ function Sermons() {
   useEffect(() => {
     const fetchSermons = async () => {
       try {
-        const response = await fetch('/api/sermons');
+        const response = await fetch(getApiUrl('/api/sermons'));
         const data = await response.json();
         setSermons(data);
       } catch (error) {

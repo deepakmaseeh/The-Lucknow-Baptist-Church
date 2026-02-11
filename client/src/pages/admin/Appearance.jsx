@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useSiteConfig } from '../../context/SiteConfigContext';
+import { getApiUrl } from '../../utils/api';
 
 function Appearance() {
   const { user } = useAuth();
@@ -53,7 +54,7 @@ function Appearance() {
     setSaving(true);
     
     try {
-        const response = await fetch('/api/settings', {
+        const response = await fetch(getApiUrl('/api/settings'), {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -89,7 +90,7 @@ function Appearance() {
         },
       };
 
-      const { data } = await axios.post('/api/upload', formData, config);
+      const { data } = await axios.post(getApiUrl('/api/upload'), formData, config);
       
       // Update form state with the returned path
       setFormData(prev => ({ ...prev, [field]: data }));
