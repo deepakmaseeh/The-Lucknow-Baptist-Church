@@ -35,7 +35,7 @@ const createBlog = asyncHandler(async (req, res) => {
         image,
         content,
         category,
-        date
+        date: date || new Date().toISOString().split('T')[0]
     });
 
     const createdBlog = await blog.save();

@@ -5,6 +5,7 @@ import sermonHero from '../assets/sermon-hero.png';
 function Sermons() {
   const [sermons, setSermons] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [playingSermonId, setPlayingSermonId] = useState(null);
 
   useEffect(() => {
     const fetchSermons = async () => {
@@ -21,6 +22,17 @@ function Sermons() {
 
     fetchSermons();
   }, []);
+
+  const getYoutubeId = (url) => {
+    if (!url) return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+
+  const handlePlayVideo = (id) => {
+    setPlayingSermonId(id);
+  };
 
   return (
     <>
@@ -98,45 +110,71 @@ function Sermons() {
                   border: '1px solid rgba(0,0,0,0.03)'
                 }}
                 >
-                  {/* Image/Thumbnail */}
+                  {/* Image/Thumbnail or Video Player */}
                   <div style={{ 
                     height: '200px', 
-                    background: `url(${sermon.img}) center/cover no-repeat`,
                     position: 'relative',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
+                    width: '100%',
+                    background: '#000'
                   }}>
-                     {/* Play Button Overlay */}
-                     <div style={{
-                       width: '60px',
-                       height: '60px',
-                       borderRadius: '50%',
-                       background: 'rgba(0,0,0,0.6)',
-                       display: 'flex',
-                       alignItems: 'center',
-                       justifyContent: 'center',
-                       color: 'white',
-                       fontSize: '1.5rem',
-                       backdropFilter: 'blur(5px)',
-                       cursor: 'pointer'
-                     }}>
-                       ▶
-                     </div>
-                     
-                     <span style={{ 
-                      position: 'absolute', 
-                      bottom: '15px', 
-                      left: '15px', 
-                      background: 'var(--gold-color)', 
-                      padding: '4px 10px', 
-                      borderRadius: '4px', 
-                      fontSize: '0.75rem',
-                      fontWeight: '700',
-                      color: 'white'
-                    }}>
-                      {sermon.series}
-                    </span>
+                    {playingSermonId === sermon._id && sermon.videoUrl ? (
+                        <iframe 
+                            width="100%" 
+                            height="100%" 
+                            src={`https://www.youtube.com/embed/${getYoutubeId(sermon.videoUrl)}?autoplay=1`} 
+                            title={sermon.title}
+                            frameBorder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowFullScreen
+                        ></iframe>
+                    ) : (
+                        <div 
+                            style={{ 
+                                width: '100%', 
+                                height: '100%', 
+                                background: `url(${sermon.img}) center/cover no-repeat`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer'
+                            }}
+                            onClick={() => handlePlayVideo(sermon._id)}
+                        >
+                            {/* Play Button Overlay */}
+                            <div style={{
+                                width: '60px',
+                                height: '60px',
+                                borderRadius: '50%',
+                                background: 'rgba(0,0,0,0.6)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: 'white',
+                                fontSize: '1.5rem',
+                                backdropFilter: 'blur(5px)',
+                                transition: 'transform 0.2s',
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                            >
+                                ▶
+                            </div>
+                            
+                            <span style={{ 
+                                position: 'absolute', 
+                                bottom: '15px', 
+                                left: '15px', 
+                                background: 'var(--gold-color)', 
+                                padding: '4px 10px', 
+                                borderRadius: '4px', 
+                                fontSize: '0.75rem',
+                                fontWeight: '700',
+                                color: 'white'
+                            }}>
+                                {sermon.series}
+                            </span>
+                        </div>
+                    )}
                   </div>
 
                   {/* Content */}
@@ -156,8 +194,12 @@ function Sermons() {
                       <span>{sermon.date}</span>
                     </div>
 
-                    <button className="btn-outline-dark full-width" style={{ width: '100%', borderColor: '#ddd', color: '#333' }}>
-                      Watch Message
+                    <button 
+                        className="btn-outline-dark full-width" 
+                        style={{ width: '100%', borderColor: '#ddd', color: '#333' }}
+                        onClick={() => handlePlayVideo(sermon._id)}
+                    >
+                      {playingSermonId === sermon._id ? 'Watching Now' : 'Watch Message'}
                     </button>
                   </div>
                 </div>

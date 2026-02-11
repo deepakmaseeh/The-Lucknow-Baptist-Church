@@ -7,9 +7,13 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'http://localhost:5002',
         changeOrigin: true,
       },
     },
   },
+  // Expose env var for potential non-proxy usage if needed, though Vite does this automatically with import.meta.env
+  define: {
+    'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL)
+  }
 })

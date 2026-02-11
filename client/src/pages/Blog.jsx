@@ -147,7 +147,7 @@ function Blog() {
                       {post.content ? post.content.substring(0, 100) + '...' : ''}
                     </p>
 
-                    <Link to={`/blog/${post.id}`} style={{ 
+                    <Link to={`/blog/${post._id}`} style={{ 
                       textDecoration: 'none', 
                       color: 'var(--gold-color)', 
                       fontWeight: '700', 

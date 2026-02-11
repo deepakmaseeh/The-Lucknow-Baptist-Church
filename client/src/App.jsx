@@ -16,6 +16,7 @@ import FirstVisit from './pages/FirstVisit';
 import Give from './pages/Give';
 import Sermons from './pages/Sermons'; 
 import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import NotFound from './pages/NotFound';
 
 // Admin Pages
@@ -46,6 +47,7 @@ function App() {
               <Route path="/events" element={<Events />} />
               <Route path="/sermons" element={<Sermons />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:id" element={<BlogPost />} />
               <Route path="/new" element={<FirstVisit />} />
               <Route path="/give" element={<Give />} />
               
