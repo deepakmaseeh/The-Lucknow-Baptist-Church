@@ -52,6 +52,9 @@ const AdminSidebar = () => {
         <NavLink to="/admin/dashboard" style={linkStyle} end>
           <span>📊</span> Dashboard
         </NavLink>
+        <NavLink to="/admin/analytics" style={linkStyle}>
+          <span>📈</span> Analytics
+        </NavLink>
         
         <div style={{ padding: '20px 20px 10px', fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: 'bold' }}>
           Content Management
@@ -69,6 +72,9 @@ const AdminSidebar = () => {
         <div style={{ padding: '20px 20px 10px', fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: 'bold' }}>
           Settings
         </div>
+        <NavLink to="/admin/podcast" style={linkStyle}>
+          <span>🎙️</span> Podcast
+        </NavLink>
         <NavLink to="/admin/appearance" style={linkStyle}>
           <span>🎨</span> Appearance
         </NavLink>

@@ -27,9 +27,11 @@ import Dashboard from './pages/admin/Dashboard';
 import ManageBlogs from './pages/admin/ManageBlogs';
 import ManageSermons from './pages/admin/ManageSermons';
 import ManageSeries from './pages/admin/ManageSeries';
+import PodcastSettings from './pages/admin/PodcastSettings';
 
 import AdminLayout from './components/admin/AdminLayout';
 import Appearance from './pages/admin/Appearance';
+import Analytics from './pages/admin/Analytics';
 
 import './index.css';
 
@@ -132,6 +134,26 @@ function App() {
                   <ProtectedRoute>
                     <AdminLayout>
                         <ManageSeries />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/podcast" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                        <PodcastSettings />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/analytics" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                        <Analytics />
                     </AdminLayout>
                   </ProtectedRoute>
                 } 

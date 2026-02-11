@@ -6,6 +6,9 @@ import 'react-quill/dist/quill.snow.css';
 import { useAuth } from '../../context/AuthContext';
 import { getApiUrl } from '../../utils/api';
 import TagInput from '../../components/TagInput';
+import RevisionHistory from '../../components/admin/RevisionHistory';
+import WorkflowStatus from '../../components/admin/WorkflowStatus';
+import WorkflowActions from '../../components/admin/WorkflowActions';
 
 function ManageBlogs() {
   const navigate = useNavigate();
@@ -23,6 +26,8 @@ function ManageBlogs() {
   });
   const [scheduleForLater, setScheduleForLater] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [workflowState, setWorkflowState] = useState('draft');
   const { user } = useAuth();
 
   useEffect(() => {
@@ -40,6 +45,7 @@ function ManageBlogs() {
             tags: data.tags || [],
             publishDate: data.publishDate ? new Date(data.publishDate).toISOString().slice(0, 16) : ''
           });
+          setWorkflowState(data.workflowState || 'draft');
           if (data.publishDate && new Date(data.publishDate) > new Date()) {
             setScheduleForLater(true);
           }
@@ -128,8 +134,53 @@ function ManageBlogs() {
       <div className="container" style={{ maxWidth: '800px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
           <h1>{editId ? 'Edit Blog Post' : 'Create New Blog Post'}</h1>
-          <button onClick={() => navigate('/admin/dashboard')} className="btn-outline-dark">Cancel</button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            {editId && (
+              <button 
+                type="button"
+                onClick={() => setShowHistory(!showHistory)} 
+                className="btn-outline-dark"
+                style={{ background: showHistory ? 'var(--gold-color)' : 'transparent', color: showHistory ? 'white' : '#333' }}
+              >
+                📜 {showHistory ? 'Hide' : 'Show'} History
+              </button>
+            )}
+            <button onClick={() => navigate('/admin/dashboard')} className="btn-outline-dark">Cancel</button>
+          </div>
         </div>
+
+        {/* Revision History */}
+        {editId && showHistory && (
+          <RevisionHistory 
+            contentType="blog" 
+            contentId={editId}
+            onRestore={() => window.location.reload()}
+          />
+        )}
+
+        {/* Workflow Status & Actions */}
+        {editId && (
+          <div style={{
+            background: '#f9f9f9',
+            padding: '20px',
+            borderRadius: '8px',
+            marginBottom: '20px',
+            border: '1px solid #e0e0e0'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+              <div>
+                <h3 style={{ margin: '0 0 10px 0', fontSize: '1rem' }}>Workflow Status</h3>
+                <WorkflowStatus state={workflowState} />
+              </div>
+            </div>
+            <WorkflowActions 
+              contentType="blog"
+              contentId={editId}
+              currentState={workflowState}
+              onStateChange={(newState) => setWorkflowState(newState)}
+            />
+          </div>
+        )}
 
         <div style={{ background: 'white', padding: '40px', borderRadius: '16px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>

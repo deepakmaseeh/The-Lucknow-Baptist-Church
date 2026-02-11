@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { getApiUrl } from '../../utils/api';
 import TagInput from '../../components/TagInput';
+import RevisionHistory from '../../components/admin/RevisionHistory';
 
 function ManageSermons() {
   const navigate = useNavigate();

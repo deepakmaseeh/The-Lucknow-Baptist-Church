@@ -79,6 +79,10 @@ const createBlog = asyncHandler(async (req, res) => {
     });
 
     const createdBlog = await blog.save();
+
+    // Invalidate blog list cache
+    await invalidateCache('cache:/api/blogs*');
+
     res.status(201).json(createdBlog);
 });
 
@@ -105,6 +109,11 @@ const updateBlog = asyncHandler(async (req, res) => {
         }
 
         const updatedBlog = await blog.save();
+
+        // Invalidate caches
+        await invalidateCache('cache:/api/blogs*');
+        await invalidateCache(`cache:/api/blogs/${blog.slug}`);
+
         res.json(updatedBlog);
     } else {
         res.status(404);

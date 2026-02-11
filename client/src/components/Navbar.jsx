@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useSiteConfig } from '../context/SiteConfigContext';
 import SearchBar from './SearchBar';
+import LanguageSwitcher from './LanguageSwitcher';
 import logoImg from '../assets/images/logo.png';
 
 function Navbar() {
