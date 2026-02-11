@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useSiteConfig } from '../context/SiteConfigContext';
+import logoImg from '../assets/images/logo.png';
 
 function Navbar() {
   const { config } = useSiteConfig();
@@ -30,9 +31,12 @@ function Navbar() {
         <div className="navbar-content">
           <Link to="/" className="logo-container" onClick={() => setIsMenuOpen(false)}>
             {/* Dynamic Logo or Text */}
-            {config?.logoUrl ? (
-                <img src={config.logoUrl} alt={config.siteName} className="logo-img" />
-            ) : null}
+            <img 
+              src={config?.logoUrl || logoImg} 
+              alt={config?.siteName || 'The Lucknow Baptist Church'} 
+              className="logo-img" 
+              style={{ maxHeight: '50px', width: 'auto' }} 
+            />
             
             {/* Always show text if no logo, or maybe side by side. For now side by side as per CSS */}
             <span className="logo-text">{config?.siteName || 'The Lucknow Baptist Church'}</span>
