@@ -25,6 +25,27 @@ const blogSchema = mongoose.Schema({
     date: {
         type: String, // Storing as string for display flexibility, or use Date type
         required: true
+    },
+    slug: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    readTime: {
+        type: Number, // In minutes
+        default: 0
+    },
+    tags: {
+        type: [String],
+        default: []
+    },
+    isPublished: {
+        type: Boolean,
+        default: true
+    },
+    publishDate: {
+        type: Date,
+        default: Date.now
     }
 }, {
     timestamps: true

@@ -5,9 +5,14 @@ const sermonSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    seriesId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Series',
+        required: false
+    },
     series: {
         type: String,
-        required: true
+        required: false  // Keep for backward compatibility
     },
     speaker: {
         type: String,
@@ -24,6 +29,23 @@ const sermonSchema = mongoose.Schema({
     img: {
         type: String,
         required: false
+    },
+    slug: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    tags: {
+        type: [String],
+        default: []
+    },
+    isPublished: {
+        type: Boolean,
+        default: true
+    },
+    publishDate: {
+        type: Date,
+        default: Date.now
     }
 }, {
     timestamps: true

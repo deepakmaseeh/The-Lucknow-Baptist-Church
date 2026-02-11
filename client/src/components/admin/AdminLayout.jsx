@@ -8,10 +8,7 @@ const AdminLayout = ({ children }) => {
       <main style={{ 
         marginLeft: '260px', 
         width: 'calc(100% - 260px)', 
-        padding: '40px',
-        marginTop: '72px' // Offset existing navbar if needed, but typically Admin has no top navbar or a different one. 
-                           // Current public Navbar is fixed. We might want to hide public navbar on admin pages? 
-                           // For now, let's assume we just push content down.
+        padding: '40px'
       }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
           {children}

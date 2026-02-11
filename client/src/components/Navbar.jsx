@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useSiteConfig } from '../context/SiteConfigContext';
+import SearchBar from './SearchBar';
 import logoImg from '../assets/images/logo.png';
 
 function Navbar() {
@@ -46,6 +47,11 @@ function Navbar() {
              <div className={`bar ${isMenuOpen ? 'change' : ''}`}></div>
              <div className={`bar ${isMenuOpen ? 'change' : ''}`}></div>
              <div className={`bar ${isMenuOpen ? 'change' : ''}`}></div>
+          </div>
+
+          {/* Search Bar */}
+          <div style={{ flex: 1, maxWidth: '400px', margin: '0 30px', display: window.innerWidth > 768 ? 'block' : 'none' }}>
+            <SearchBar />
           </div>
 
           <ul className={`nav-links ${isMenuOpen ? 'nav-active' : ''}`}>

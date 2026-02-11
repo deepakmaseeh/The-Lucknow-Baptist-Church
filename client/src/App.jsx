@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './context/AuthContext';
 import { SiteConfigProvider } from './context/SiteConfigContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -17,6 +18,7 @@ import Give from './pages/Give';
 import Sermons from './pages/Sermons'; 
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import SearchResults from './pages/SearchResults';
 import NotFound from './pages/NotFound';
 
 // Admin Pages
@@ -24,37 +26,46 @@ import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import ManageBlogs from './pages/admin/ManageBlogs';
 import ManageSermons from './pages/admin/ManageSermons';
+import ManageSeries from './pages/admin/ManageSeries';
 
 import AdminLayout from './components/admin/AdminLayout';
 import Appearance from './pages/admin/Appearance';
 
 import './index.css';
 
+import PublicLayout from './components/PublicLayout';
+
+// ... imports remain the same
+
 function App() {
   return (
-    <AuthProvider>
-      <SiteConfigProvider>
+    <HelmetProvider>
+      <AuthProvider>
+        <SiteConfigProvider>
         <Router>
           <ScrollToTop />
           <BackToTop />
           <div className="app-container">
-            <Navbar />
             <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/connect" element={<Connect />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/sermons" element={<Sermons />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:id" element={<BlogPost />} />
-              <Route path="/new" element={<FirstVisit />} />
-              <Route path="/give" element={<Give />} />
+              {/* Public Routes (Wrapped in Navbar) */}
+              <Route element={<PublicLayout />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/connect" element={<Connect />} />
+                  <Route path="/events" element={<Events />} />
+                  <Route path="/sermons" element={<Sermons />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPost />} />
+                  <Route path="/new" element={<FirstVisit />} />
+                  <Route path="/new" element={<FirstVisit />} />
+                  <Route path="/give" element={<Give />} />
+              </Route>
               
-              {/* Admin Routes */}
+              {/* Admin Routes (No Navbar) */}
               <Route path="/admin/login" element={<Login />} />
               
-              {/* Protected Admin Pages (Wrapped in Layout) */}
+              {/* Protected Admin Pages (Wrapped in AdminLayout) */}
               <Route 
                 path="/admin/dashboard" 
                 element={
@@ -76,11 +87,51 @@ function App() {
                 } 
               />
               <Route 
+                path="/admin/blogs/edit/:id" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                        <ManageBlogs />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
                 path="/admin/sermons/new" 
                 element={
                   <ProtectedRoute>
                     <AdminLayout>
                         <ManageSermons />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/sermons/edit/:id" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                        <ManageSermons />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/series" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                        <ManageSeries />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/series/edit/:id" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                        <ManageSeries />
                     </AdminLayout>
                   </ProtectedRoute>
                 } 
@@ -102,7 +153,9 @@ function App() {
         </Router>
       </SiteConfigProvider>
     </AuthProvider>
+    </HelmetProvider>
   );
 }
+
 
 export default App;

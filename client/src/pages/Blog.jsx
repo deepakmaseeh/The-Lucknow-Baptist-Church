@@ -3,16 +3,32 @@ import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { getApiUrl } from '../utils/api';
 
+import SEO from '../components/SEO';
+
 function Blog() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedTag, setSelectedTag] = useState(null);
+  const [allTags, setAllTags] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(getApiUrl('/api/blogs'));
+        const url = selectedTag 
+          ? getApiUrl(`/api/blogs?tag=${selectedTag}`)
+          : getApiUrl('/api/blogs');
+        const response = await fetch(url);
         const data = await response.json();
         setPosts(data);
+        
+        // Extract unique tags from all posts
+        const tags = new Set();
+        data.forEach(post => {
+          if (post.tags && Array.isArray(post.tags)) {
+            post.tags.forEach(tag => tags.add(tag));
+          }
+        });
+        setAllTags(Array.from(tags).sort());
       } catch (error) {
         console.error('Error fetching blogs:', error);
       } finally {
@@ -21,10 +37,11 @@ function Blog() {
     };
 
     fetchPosts();
-  }, []);
+  }, [selectedTag]);
 
   return (
     <>
+      <SEO title="Our Blog" description="Stories, devotionals, and updates from Lucknow Baptist Church." />
       <div className="page-wrapper">
         
         {/* HERO SECTION - Using inline styles for guaranteed visibility */}
@@ -71,12 +88,30 @@ function Blog() {
         <section style={{ paddingBottom: '80px', backgroundColor: 'var(--beige-bg)' }}>
           <div className="container">
             
-            {/* Filter/Categories Placeholder (Visual Only) */}
-            <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', marginBottom: '40px', flexWrap: 'wrap' }}>
-               <button className="btn-gold" style={{ padding: '8px 20px', fontSize: '0.9rem' }}>All Posts</button>
-               <button className="btn-outline-dark" style={{ color: '#333', borderColor: '#ddd' }}>Devotionals</button>
-               <button className="btn-outline-dark" style={{ color: '#333', borderColor: '#ddd' }}>News</button>
-               <button className="btn-outline-dark" style={{ color: '#333', borderColor: '#ddd' }}>Events</button>
+            {/* Tag Filters */}
+            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginBottom: '40px', flexWrap: 'wrap' }}>
+               <button 
+                 onClick={() => setSelectedTag(null)}
+                 className={!selectedTag ? "btn-gold" : "btn-outline-dark"} 
+                 style={{ padding: '8px 20px', fontSize: '0.9rem', borderColor: !selectedTag ? 'var(--gold-color)' : '#ddd' }}
+               >
+                 All Posts
+               </button>
+               {allTags.map(tag => (
+                 <button 
+                   key={tag}
+                   onClick={() => setSelectedTag(tag)}
+                   className={selectedTag === tag ? "btn-gold" : "btn-outline-dark"}
+                   style={{ 
+                     padding: '8px 20px', 
+                     fontSize: '0.9rem', 
+                     borderColor: selectedTag === tag ? 'var(--gold-color)' : '#ddd',
+                     textTransform: 'capitalize'
+                   }}
+                 >
+                   {tag}
+                 </button>
+               ))}
             </div>
 
             {/* Grid */}
@@ -148,7 +183,29 @@ function Blog() {
                       {post.content ? post.content.substring(0, 100) + '...' : ''}
                     </p>
 
-                    <Link to={`/blog/${post._id}`} style={{ 
+                    {/* Tags */}
+                    {post.tags && post.tags.length > 0 && (
+                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '20px' }}>
+                        {post.tags.map((tag, idx) => (
+                          <span 
+                            key={idx}
+                            style={{
+                              background: '#f0f0f0',
+                              color: '#666',
+                              padding: '4px 10px',
+                              borderRadius: '12px',
+                              fontSize: '0.75rem',
+                              fontWeight: '600',
+                              textTransform: 'capitalize'
+                            }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <Link to={`/blog/${post.slug}`} style={{ 
                       textDecoration: 'none', 
                       color: 'var(--gold-color)', 
                       fontWeight: '700', 

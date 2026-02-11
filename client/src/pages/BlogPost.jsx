@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import Footer from '../components/Footer';
 import { getApiUrl } from '../utils/api';
+import SEO from '../components/SEO';
 
 function BlogPost() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [relatedPosts, setRelatedPosts] = useState([]);
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(getApiUrl(`/api/blogs/${id}`));
+        const response = await fetch(getApiUrl(`/api/blogs/${slug}`));
         if (!response.ok) {
             throw new Error('Blog post not found');
         }
@@ -27,7 +30,23 @@ function BlogPost() {
     };
 
     fetchPost();
-  }, [id]);
+  }, [slug]);
+
+  // Fetch related posts
+  useEffect(() => {
+    if (post && post._id) {
+      const fetchRelated = async () => {
+        try {
+          const response = await fetch(getApiUrl(`/api/blogs/${post._id}/related`));
+          const data = await response.json();
+          setRelatedPosts(data);
+        } catch (error) {
+          console.error('Error fetching related posts:', error);
+        }
+      };
+      fetchRelated();
+    }
+  }, [post]);
 
   if (loading) {
     return (
@@ -49,8 +68,28 @@ function BlogPost() {
       );
   }
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "image": post.image ? [post.image] : [],
+    "datePublished": post.createdAt,
+    "dateModified": post.updatedAt,
+    "author": [{
+        "@type": "Person",
+        "name": post.author
+    }]
+  };
+
   return (
     <>
+      <SEO 
+        title={post.title}
+        description={`Read ${post.title} by ${post.author}.`}
+        image={post.image}
+        type="article"
+        schema={structuredData}
+      />
       <div className="page-wrapper" style={{ paddingTop: '80px', minHeight: '100vh', background: '#fff' }}>
         
         {/* Full Width Image Header if available */}
@@ -102,16 +141,17 @@ function BlogPost() {
                 </div>
             </div>
 
-            {/* Content - Basic formatting for now, assumes plain text or limited HTML */}
-            <div style={{ 
-                fontSize: '1.1rem', 
-                lineHeight: '1.8', 
-                color: '#444', 
-                marginTop: '40px',
-                whiteSpace: 'pre-line' // Preserves line breaks from textarea
-            }}>
-                {post.content}
-            </div>
+            {/* Content - Rich Text Rendering */}
+            <div 
+                style={{ 
+                    fontSize: '1.1rem', 
+                    lineHeight: '1.8', 
+                    color: '#444', 
+                    marginTop: '40px',
+                    wordWrap: 'break-word'
+                }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
+            />
 
             <div style={{ marginTop: '60px', paddingTop: '30px', borderTop: '1px solid #eee' }}>
                 <Link to="/blog" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: 'var(--primary-color)', fontWeight: 'bold' }}>

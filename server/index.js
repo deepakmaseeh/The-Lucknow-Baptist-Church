@@ -7,8 +7,12 @@ import uploadRoutes from './routes/uploadRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import blogRoutes from './routes/blogRoutes.js';
 import sermonRoutes from './routes/sermonRoutes.js';
+import seriesRoutes from './routes/seriesRoutes.js';
+import searchRoutes from './routes/searchRoutes.js';
 import siteConfigRoutes from './routes/siteConfigRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import { getSitemap } from './controllers/sitemapController.js';
+import schedulePublishing from './utils/scheduledPublishing.js';
 
 // ... (other imports)
 
@@ -18,6 +22,9 @@ console.log('Loaded PORT:', process.env.PORT);
 
 // Connect to Database
 connectDB();
+
+// Start scheduled publishing cron job
+schedulePublishing();
 
 const app = express();
 
@@ -29,10 +36,14 @@ app.use(cors());
 const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
+app.get('/sitemap.xml', getSitemap);
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/sermons', sermonRoutes);
+app.use('/api/series', seriesRoutes);
+app.use('/api/search', searchRoutes);
 app.use('/api/settings', siteConfigRoutes);
 app.use('/api/upload', uploadRoutes);
 

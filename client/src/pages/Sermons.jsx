@@ -3,6 +3,8 @@ import Footer from '../components/Footer';
 import sermonHero from '../assets/sermon-hero.png';
 import { getApiUrl } from '../utils/api';
 
+import SEO from '../components/SEO';
+
 function Sermons() {
   const [sermons, setSermons] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,6 +39,7 @@ function Sermons() {
 
   return (
     <>
+      <SEO title="Sermons" description="Watch recent messages and explore our library of biblical teaching from Lucknow Baptist Church." />
       <div className="page-wrapper">
 
         {/* HERO SECTION - Inline Styles with Local Image */}
