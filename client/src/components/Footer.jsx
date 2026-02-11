@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useSiteConfig } from '../context/SiteConfigContext';
 
 function Footer() {
+  const { config } = useSiteConfig();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -8,7 +10,6 @@ function Footer() {
     e.preventDefault();
     if(email) {
       setSubscribed(true);
-      // Simulate API call
       setTimeout(() => setSubscribed(true), 500);
     }
   };
@@ -16,7 +17,7 @@ function Footer() {
   return (
     <footer className="connect-footer" style={{ padding: '30px 0 20px' }}>
       <div className="container">
-        {/* Newsletter Section - Condensed */}
+        {/* Newsletter Section */}
         <div style={{ maxWidth: '800px', margin: '0 auto 20px', paddingBottom: '20px', borderBottom: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
            <h4 style={{ margin: 0, color: 'white' }}>Stay Updated:</h4>
            {subscribed ? (
@@ -36,16 +37,16 @@ function Footer() {
            )}
         </div>
 
-        {/* Compact Info Row */}
+        {/* Compact Dynamic Info Row */}
         <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '30px', color: '#ccc', fontSize: '0.9rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>📧</span> <span>info@lucknowbaptistchurch.org</span>
+            <span>📧</span> <span>{config?.contact?.email || 'info@lucknowbaptist.org'}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-             <span>📞</span> <span>(608) 781-2466</span>
+             <span>📞</span> <span>{config?.contact?.phone || '(+91) 98765 43210'}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-             <span>📍</span> <span>Lucknow, Uttar Pradesh, India</span>
+             <span>📍</span> <span>{config?.contact?.address || 'Lucknow, Uttar Pradesh, India'}</span>
           </div>
            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
              <span>💳</span> <span style={{ color: 'var(--gold-color)', cursor: 'pointer' }}>Give Online</span>
@@ -53,7 +54,7 @@ function Footer() {
         </div>
 
         <div className="footer-bottom" style={{ marginTop: '20px', paddingTop: '10px', borderTop: 'none' }}>
-          <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>&copy; 2026 The Lucknow Baptist Church</p>
+            <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>&copy; {new Date().getFullYear()} {config?.siteName || 'The Lucknow Baptist Church'}</p>
         </div>
       </div>
     </footer>

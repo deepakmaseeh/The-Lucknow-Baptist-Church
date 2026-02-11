@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import logoImg from '../assets/images/logo.png'; // Importing the logo
+import { useSiteConfig } from '../context/SiteConfigContext';
 
 function Navbar() {
+  const { config } = useSiteConfig();
   const [isFloating, setIsFloating] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -12,7 +13,6 @@ function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Close mobile menu on scroll if open (optional UI choice, keeping simple)
       if (window.scrollY > 80) {
         setIsFloating(true);
       } else {
@@ -29,8 +29,13 @@ function Navbar() {
       <nav className={`navbar ${isFloating ? 'navbar--floating' : ''}`}>
         <div className="navbar-content">
           <Link to="/" className="logo-container" onClick={() => setIsMenuOpen(false)}>
-            <img src={logoImg} alt="The Lucknow Baptist Church" className="logo-img" />
-            <span className="logo-text">The Lucknow Baptist Church</span>
+            {/* Dynamic Logo or Text */}
+            {config?.logoUrl ? (
+                <img src={config.logoUrl} alt={config.siteName} className="logo-img" />
+            ) : null}
+            
+            {/* Always show text if no logo, or maybe side by side. For now side by side as per CSS */}
+            <span className="logo-text">{config?.siteName || 'The Lucknow Baptist Church'}</span>
           </Link>
           
           <div className="hamburger" onClick={toggleMenu}>
@@ -50,7 +55,6 @@ function Navbar() {
           </ul>
         </div>
       </nav>
-      {/* Spacer to prevent layout jump when navbar becomes fixed */}
       {isFloating && <div style={{ height: '72px' }}></div>}
     </>
   );

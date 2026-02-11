@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import Footer from '../components/Footer';
+import deepakImg from '../assets/images/deepak-maseeh.png';
+import adityaImg from '../assets/images/aditya-singh.jpeg';
+import amerdeepImg from '../assets/images/amerdeep-nand.jpeg';
+import logoImg from '../assets/images/logo.png';
 
 function About() {
   const [activeAccordion, setActiveAccordion] = useState(null);
@@ -19,11 +23,10 @@ function About() {
     "Communion",
     "The Return of Christ"
   ];
-
   const leadership = [
-    { name: "Mr. Amerdeep Nand", role: "Lead Pastor", img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80" },
-    { name: "Mr. Deepak Maseeh", role: "Vice President", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80" },
-    { name: "Mr. Aditya Singh", role: "Treasurer", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80" }
+    { name: "Mr. Amerdeep Nand", role: "Lead Pastor", img: amerdeepImg },
+    { name: "Mr. Deepak Maseeh", role: "Vice President", img: deepakImg },
+    { name: "Mr. Aditya Singh", role: "Treasurer", img: adityaImg }
   ];
 
   const values = [

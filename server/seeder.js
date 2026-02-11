@@ -4,6 +4,7 @@ import colors from 'colors';
 import User from './models/User.js';
 import Blog from './models/Blog.js';
 import Sermon from './models/Sermon.js';
+import SiteConfig from './models/SiteConfig.js';
 import connectDB from './config/db.js';
 
 dotenv.config();
@@ -16,6 +17,7 @@ const importData = async () => {
         await User.deleteMany();
         await Blog.deleteMany();
         await Sermon.deleteMany();
+        await SiteConfig.deleteMany(); // Added SiteConfig deleteMany
 
         // Create Admin User
         const createdUsers = await User.create([
@@ -27,6 +29,17 @@ const importData = async () => {
         ]);
 
         const adminUser = createdUsers[0]._id;
+
+        // Create Default Site Config
+        await SiteConfig.create({
+            siteName: 'The Lucknow Baptist Church',
+            tagline: 'A Place to Belong',
+            theme: {
+                primaryColor: '#D4AF37',
+                secondaryColor: '#111111',
+                backgroundColor: '#f4f1ea'
+            }
+        });
 
         // Create Sample Blogs
         const sampleBlogs = [
