@@ -58,17 +58,15 @@ const AdminSidebar = () => {
   };
 
   return (
-    <div style={{
+    <div className="glass-sidebar" style={{
       width: `${sidebarWidth}px`,
       height: '100vh',
-      background: '#1a1a1a',
       color: 'white',
       position: 'fixed',
       left: 0,
       top: 0,
       display: 'flex',
       flexDirection: 'column',
-      borderRight: '1px solid #333',
       zIndex: 1000,
       transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       overflowX: 'hidden',
@@ -77,7 +75,7 @@ const AdminSidebar = () => {
       {/* Toggle Button */}
       <div style={{ 
         padding: isCollapsed ? '15px 10px' : '15px 20px', 
-        borderBottom: '1px solid #333',
+        borderBottom: '1px solid rgba(255,255,255,0.1)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: isCollapsed ? 'center' : 'space-between'

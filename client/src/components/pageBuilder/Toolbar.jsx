@@ -6,6 +6,8 @@ function Toolbar({
   onTitleChange, 
   onSlugChange, 
   onSave, 
+  onPublish,
+  onSettings,
   saving,
   deviceMode,
   onDeviceModeChange,
@@ -57,25 +59,19 @@ function Toolbar({
           onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
           onBlur={(e) => e.target.style.borderColor = '#e8e8e8'}
         />
-        <input
-          type="text"
-          value={pageSlug}
-          onChange={(e) => onSlugChange(e.target.value)}
-          placeholder="page-slug"
-          style={{
-            padding: '4px 12px',
-            fontSize: '0.75rem',
-            color: '#666',
-            border: '2px solid #e8e8e8',
-            borderRadius: '5px',
-            outline: 'none',
-            transition: 'all 0.2s',
-            background: 'white',
-            fontFamily: 'monospace'
-          }}
-          onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
-          onBlur={(e) => e.target.style.borderColor = '#e8e8e8'}
-        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+             <span style={{ fontSize: '0.75rem', color: '#999', fontFamily: 'monospace' }}>/{pageSlug}</span>
+             <button
+               onClick={onSettings}
+               className="text-light-gray"
+               style={{ 
+                   background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.8rem', 
+                   padding: '0', textDecoration: 'underline' 
+               }}
+             >
+               ⚙️ Settings
+             </button>
+        </div>
       </div>
 
       {/* Device Preview Toggle */}
@@ -181,17 +177,26 @@ function Toolbar({
           👁️ <span style={{ display: 'none', '@media (min-width: 1000px)': { display: 'inline' } }}>Preview</span>
         </button>
 
-        <span style={{ 
-          fontSize: '0.8rem', 
-          color: saving ? '#D4AF37' : '#999',
-          fontWeight: '500',
-          minWidth: '55px'
-        }}>
-          {saving ? '💾 Saving...' : '✓ Ready'}
-        </span>
-        
         <button
           onClick={onSave}
+          disabled={saving}
+          style={{
+            padding: '10px 16px',
+            fontSize: '0.9rem',
+            cursor: saving ? 'not-allowed' : 'pointer',
+            background: 'white',
+            border: '1px solid #D4AF37',
+            color: '#D4AF37',
+            fontWeight: '600',
+            borderRadius: '6px',
+            transition: 'all 0.2s'
+          }}
+        >
+           {saving ? 'Saving...' : 'Draft'}
+        </button>
+
+        <button
+          onClick={onPublish}
           disabled={saving}
           className="btn-gold"
           style={{
@@ -205,7 +210,7 @@ function Toolbar({
             transition: 'all 0.2s'
           }}
         >
-          {saving ? '💾 Saving...' : '💾 SAVE PAGE'}
+          Publish
         </button>
       </div>
     </div>

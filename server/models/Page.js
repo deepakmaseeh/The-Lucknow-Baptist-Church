@@ -10,6 +10,14 @@ const pageSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    featuredImage: {
+        type: String,
+        default: ''
+    },
+    metaDescription: {
+        type: String,
+        default: ''
+    },
     blocks: [{
         id: String,
         type: String,

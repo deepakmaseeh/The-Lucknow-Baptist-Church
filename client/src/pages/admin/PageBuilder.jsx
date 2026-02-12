@@ -28,17 +28,63 @@ function PageBuilder() {
     })
   );
 
-  // Add new block from component panel
-  const handleAddBlock = (blockType) => {
+  // Add new block from component  // Add new block
+  const handleAddBlock = (type) => {
     const newBlock = {
       id: `block-${Date.now()}`,
-      type: blockType,
-      props: getDefaultProps(blockType),
-      styles: getDefaultStyles(blockType, config)
+      type,
+      props: getDefaultProps(type),
+      styles: {}
     };
     setBlocks([...blocks, newBlock]);
     setSelectedBlock(newBlock);
   };
+
+  // Get default props for each block type
+  const getDefaultProps = (type) => {
+    const defaults = {
+      form: {
+        formId: `form-${Date.now()}`,
+        title: 'Contact Us',
+        description: '',
+        submitButtonText: 'Send Message',
+        successMessage: 'Thank you! We\'ll be in touch soon.',
+        errorMessage: 'Something went wrong. Please try again.',
+        emailNotification: {
+          enabled: true,
+          recipients: [],
+          subject: 'New Form Submission'
+        },
+        fields: [
+          {
+            id: 'field-1',
+            type: 'text',
+            label: 'Full Name',
+            placeholder: 'John Doe',
+            required: true,
+            validation: { minLength: 2, maxLength: 100 }
+          },
+          {
+            id: 'field-2',
+            type: 'email',
+            label: 'Email Address',
+            placeholder: 'john@example.com',
+            required: true
+          },
+          {
+            id: 'field-3',
+            type: 'textarea',
+            label: 'Message',
+            placeholder: 'Your message...',
+            required: true,
+            rows: 5
+          }
+        ]
+      }
+    };
+    return defaults[type] || {};
+  };
+
 
   // Handle drag end (reordering)
   const handleDragEnd = (event) => {
@@ -222,7 +268,7 @@ function getDefaultProps(blockType) {
 function getDefaultStyles(blockType, config) {
   const defaults = {
     section: {
-      padding: '60px 20px',
+      padding: '20px',
       backgroundColor: '#ffffff'
     },
     heading: {

@@ -6,7 +6,13 @@ const AdminLayout = ({ children, fullWidth = false }) => {
   const { sidebarWidth } = useSidebar();
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+    <div style={{ 
+      display: 'flex', 
+      minHeight: '100vh', 
+      backgroundColor: '#f5f5f5',
+      backgroundImage: 'radial-gradient(#e0e0e0 1px, transparent 0)',
+      backgroundSize: '20px 20px'
+    }}>
       <AdminSidebar />
       <main style={{ 
         marginLeft: `${sidebarWidth}px`,

@@ -7,9 +7,11 @@ const BLOCKS = [
   { type: 'image', label: 'Image', icon: '🖼️', description: 'Picture' },
   { type: 'button', label: 'Button', icon: '🔘', description: 'CTA' },
   { type: 'columns', label: 'Columns', icon: '⚏', description: '2-4 cols' },
+  { type: 'form', label: 'Form', icon: '📝', description: 'Contact' },
   { type: 'spacer', label: 'Spacer', icon: '↕️', description: 'Space' },
   { type: 'divider', label: 'Divider', icon: '—', description: 'Line' }
 ];
+
 
 function ComponentPanel({ onAddBlock }) {
   return (

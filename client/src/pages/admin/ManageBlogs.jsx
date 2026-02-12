@@ -132,159 +132,185 @@ function ManageBlogs() {
   return (
     <div className="page-wrapper" style={{ minHeight: '100vh', background: 'var(--light-bg)' }}>
       <div className="container" style={{ maxWidth: '800px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-          <h1>{editId ? 'Edit Blog Post' : 'Create New Blog Post'}</h1>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            {editId && (
-              <button 
-                type="button"
-                onClick={() => setShowHistory(!showHistory)} 
-                className="btn-outline-dark"
-                style={{ background: showHistory ? 'var(--gold-color)' : 'transparent', color: showHistory ? 'white' : '#333' }}
-              >
-                📜 {showHistory ? 'Hide' : 'Show'} History
-              </button>
-            )}
-            <button onClick={() => navigate('/admin/dashboard')} className="btn-outline-dark">Cancel</button>
-          </div>
-        </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+        <h2 style={{ fontSize: '2rem', margin: 0, color: '#1a1a1a', fontWeight: '800' }}>
+          {editId ? 'Edit Blog Post' : 'Add New Blog Post'}
+        </h2>
+        <button onClick={() => navigate('/admin/dashboard')} className="btn-outline-dark">Cancel</button>
+      </div>
 
-        {/* Revision History */}
-        {editId && showHistory && (
-          <RevisionHistory 
-            contentType="blog" 
-            contentId={editId}
-            onRestore={() => window.location.reload()}
-          />
-        )}
-
-        {/* Workflow Status & Actions */}
-        {editId && (
-          <div style={{
-            background: '#f9f9f9',
-            padding: '20px',
-            borderRadius: '8px',
-            marginBottom: '20px',
-            border: '1px solid #e0e0e0'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-              <div>
-                <h3 style={{ margin: '0 0 10px 0', fontSize: '1rem' }}>Workflow Status</h3>
-                <WorkflowStatus state={workflowState} />
-              </div>
-            </div>
-            <WorkflowActions 
-              contentType="blog"
-              contentId={editId}
-              currentState={workflowState}
-              onStateChange={(newState) => setWorkflowState(newState)}
-            />
-          </div>
-        )}
-
-        <div style={{ background: 'white', padding: '40px', borderRadius: '16px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            
+      <div className="glass-panel" style={{ padding: '32px' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: '40px' }}>
+          
+          {/* Left Column */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             <div className="form-group">
-              <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Title</label>
-              <input 
-                type="text" 
-                name="title" 
-                value={formData.title} 
-                onChange={handleChange} 
-                className="form-input" 
-                placeholder="Enter post title" 
-                required 
-                style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#444' }}>Title</label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                required
+                style={{ 
+                  width: '100%', 
+                  padding: '12px 16px', 
+                  borderRadius: '8px', 
+                  border: '1px solid #ddd', 
+                  fontSize: '1rem',
+                  background: 'rgba(255,255,255,0.8)'
+                }}
               />
             </div>
 
             <div className="form-group">
-               <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Author</label>
-               <input 
-                 type="text" 
-                 name="author" 
-                 value={formData.author} 
-                 onChange={handleChange} 
-                 className="form-input" 
-                 placeholder="Author Name" 
-                 required 
-                 style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
-               />
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#444' }}>Author</label>
+              <input
+                type="text"
+                name="author"
+                value={formData.author}
+                onChange={handleChange}
+                required
+                style={{ 
+                  width: '100%', 
+                  padding: '12px 16px', 
+                  borderRadius: '8px', 
+                  border: '1px solid #ddd', 
+                  fontSize: '1rem',
+                  background: 'rgba(255,255,255,0.8)'
+                }}
+              />
+            </div>
+            
+             <div className="form-group">
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#444' }}>Tags</label>
+               <div style={{ background: 'rgba(255,255,255,0.5)', padding: '4px', borderRadius: '8px' }}>
+                 <TagInput tags={formData.tags} setTags={(newTags) => setFormData({ ...formData, tags: newTags })} />
+               </div>
             </div>
 
-            <div className="form-group">
-               <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Featured Image</label>
-               <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '10px' }}>
-                  <input 
-                    type="text" 
-                    name="image" 
-                    value={formData.image} 
-                    onChange={handleChange} 
-                    className="form-input" 
-                    placeholder="Image URL or Upload" 
-                    style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #ddd', backgroundColor: '#f9f9f9' }}
+             <div className="form-group">
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#444' }}>Content</label>
+              <div style={{ background: 'white', borderRadius: '8px', overflow: 'hidden' }}>
+                <ReactQuill 
+                  theme="snow" 
+                  value={formData.content} 
+                  onChange={handleContentChange} 
+                  style={{ height: '300px', marginBottom: '50px' }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+             <div className="glass-panel" style={{ padding: '24px', background: 'rgba(255,255,255,0.5)' }}>
+               <h4 style={{ marginTop: 0, marginBottom: '16px' }}>Publishing</h4>
+               <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+                <input
+                  type="checkbox"
+                  name="isPublished"
+                  checked={formData.isPublished}
+                  onChange={handleChange}
+                  id="published-check-blog"
+                  style={{ width: '20px', height: '20px', accentColor: 'var(--gold-color)' }}
+                />
+                <label htmlFor="published-check-blog" style={{ fontSize: '1rem', fontWeight: '500' }}>Publish Immediately</label>
+              </div>
+
+               <div className="form-group">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                   <input 
+                      type="checkbox" 
+                      id="schedule-check-blog"
+                      checked={scheduleForLater} 
+                      onChange={(e) => setScheduleForLater(e.target.checked)}
+                      style={{ width: '16px', height: '16px', accentColor: 'var(--gold-color)' }}
+                   />
+                   <label htmlFor="schedule-check-blog" style={{ fontSize: '0.9rem' }}>Schedule for later</label>
+                </div>
+                {scheduleForLater && (
+                  <input
+                    type="datetime-local"
+                    name="publishDate"
+                    value={formData.publishDate}
+                    onChange={handleChange}
+                     style={{ 
+                      width: '100%', 
+                      padding: '10px', 
+                      borderRadius: '6px', 
+                      border: '1px solid #ddd', 
+                      fontSize: '0.9rem'
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className="glass-panel" style={{ padding: '24px', background: 'rgba(255,255,255,0.5)' }}>
+                <h4 style={{ marginTop: 0, marginBottom: '16px' }}>Featured Image</h4>
+                <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                  <input
+                    type="text"
+                    name="image"
+                    value={formData.image}
+                    onChange={handleChange}
+                    placeholder="Image URL"
+                    style={{ 
+                      width: '100%', 
+                      padding: '10px', 
+                      borderRadius: '6px', 
+                      border: '1px solid #ddd', 
+                      fontSize: '0.9rem',
+                      background: 'white'
+                    }}
                     readOnly
                   />
-                  {formData.image && <img src={formData.image} alt="Preview" style={{ height: '50px', borderRadius: '4px', border: '1px solid #ddd' }} />}
-               </div>
-               
-               <input 
+                </div>
+                {formData.image && (
+                    <img src={formData.image} alt="Preview" style={{ width: '100%', borderRadius: '8px', height: '150px', objectFit: 'cover' }} />
+                )}
+                 <input 
                  type="file" 
                  id="image-file"
-                 label="Choose File"
                  onChange={uploadFileHandler}
-                 style={{ display: 'block', width: '100%' }}
+                 style={{ display: 'block', width: '100%', fontSize: '0.9rem', marginTop: '10px' }}
                />
-               {uploading && <span style={{ fontSize: '0.9rem', color: 'var(--gold-color)' }}>Uploading...</span>}
+                {uploading && <span style={{ fontSize: '0.9rem', color: 'var(--gold-color)' }}>Uploading...</span>}
             </div>
 
-            <div className="form-group">
-               <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Tags</label>
-               <TagInput 
-                 tags={formData.tags} 
-                 onChange={(newTags) => setFormData({ ...formData, tags: newTags })}
-               />
-               <small style={{ color: '#888', fontSize: '0.85rem', marginTop: '5px', display: 'block' }}>
-                 Press Enter to add tags. Use tags like "devotional", "prayer", "testimony", etc.
-               </small>
-            </div>
-
-            <div className="form-group">
-               <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Content</label>
-               <div style={{ background: 'white' }}>
-                 <ReactQuill 
-                   theme="snow" 
-                   value={formData.content} 
-                   onChange={handleContentChange} 
-                   style={{ height: '300px', marginBottom: '50px' }} 
-                 />
+             {/* Workflow Actions */}
+            {editId && (
+               <div className="glass-panel" style={{ padding: '20px', background: 'rgba(255,255,255,0.5)' }}>
+                  <h4 style={{ marginTop: 0, marginBottom: '10px' }}>Workflow</h4>
+                  <WorkflowStatus currentState={workflowState} />
+                  <div style={{ marginTop: '15px' }}>
+                    <WorkflowActions 
+                      documentId={editId} 
+                      type="blog" 
+                      currentState={workflowState} 
+                      onUpdate={(newState) => setWorkflowState(newState)} 
+                    />
+                  </div>
                </div>
-            </div>
+            )}
+             {editId && showHistory && (
+                 <div className="glass-panel" style={{ padding: '20px', background: 'rgba(255,255,255,0.5)', marginTop: '20px' }}>
+                    <h4 style={{marginTop:0}}>Revision History</h4>
+                    <RevisionHistory 
+                      contentType="blog" 
+                      contentId={editId}
+                      onRestore={() => window.location.reload()}
+                    />
+                 </div>
+             )}
 
-            <div style={{ marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '10px', padding: '15px', background: '#f5f5f5', borderRadius: '8px' }}>
-                <input
-                    type="checkbox"
-                    id="isPublished"
-                    name="isPublished"
-                    checked={formData.isPublished}
-                    onChange={handleChange}
-                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
-                />
-                <label htmlFor="isPublished" style={{ color: '#333', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer' }}>
-                    Visible to Public (Publish)
-                </label>
-                <span style={{ fontSize: '0.85rem', color: '#666', marginLeft: '10px' }}>
-                    {formData.isPublished ? '(Will appear on blog page)' : '(Hidden from visitors)'}
-                </span>
-            </div>
-
-            <button type="submit" className="btn-gold" style={{ width: '100%', padding: '15px', fontSize: '1.1rem' }}>
-                {editId ? 'Update Post' : 'Create Post'}
+            <button type="submit" className="btn-gold" style={{ width: '100%', padding: '14px', fontSize: '1.1rem', marginTop: '10px' }}>
+              {editId ? 'Update Blog Post' : 'Create Blog Post'}
             </button>
-          
-          </form>
-        </div>
+          </div>
+        </form>
+      </div>
       </div>
     </div>
   );

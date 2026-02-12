@@ -15,6 +15,7 @@ import podcastRoutes from './routes/podcastRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
 import pageRoutes from './routes/pageRoutes.js';
 import siteConfigRoutes from './routes/siteConfigRoutes.js';
+import formRoutes from './routes/formRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import { getSitemap } from './controllers/sitemapController.js';
 import schedulePublishing from './utils/scheduledPublishing.js';
@@ -58,6 +59,8 @@ app.use('/api/workflow', workflowRoutes);
 app.use('/api/podcast', podcastRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/pages', pageRoutes);
+app.use('/api/forms', formRoutes);
+app.use('/api/site-config', siteConfigRoutes);
 app.use('/api/settings', siteConfigRoutes);
 app.use('/api/upload', uploadRoutes);
 

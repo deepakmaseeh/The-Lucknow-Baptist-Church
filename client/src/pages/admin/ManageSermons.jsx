@@ -139,147 +139,197 @@ function ManageSermons() {
   return (
     <div className="page-wrapper" style={{ minHeight: '100vh', background: 'var(--light-bg)' }}>
       <div className="container" style={{ maxWidth: '800px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-          <h1>{editId ? 'Edit Sermon' : 'Add New Sermon'}</h1>
-          <button onClick={() => navigate('/admin/dashboard')} className="btn-outline-dark">Cancel</button>
-        </div>
-
-        <div style={{ background: 'white', padding: '40px', borderRadius: '16px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+        <h2 style={{ fontSize: '2rem', margin: 0, color: '#1a1a1a', fontWeight: '800' }}>
+          {editId ? 'Edit Sermon' : 'Add New Sermon'}
+        </h2>
+        <button onClick={() => navigate('/admin/dashboard')} className="btn-outline-dark">Cancel</button>
+      </div>
+      
+      <div className="glass-panel" style={{ padding: '32px' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: '40px' }}>
+          
+          {/* Left Column */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             <div className="form-group">
-              <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Sermon Title</label>
-              <input 
-                type="text" 
-                name="title" 
-                value={formData.title} 
-                onChange={handleChange} 
-                className="form-input" 
-                placeholder="e.g. Walking in Faith" 
-                required 
-                style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#444' }}>Sermon Title</label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="e.g. Walking in Faith"
+                required
+                style={{ 
+                  width: '100%', 
+                  padding: '12px 16px', 
+                  borderRadius: '8px', 
+                  border: '1px solid #ddd', 
+                  fontSize: '1rem',
+                  background: 'rgba(255,255,255,0.8)'
+                }}
               />
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                <div className="form-group">
-                <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Series</label>
-                <select 
-                    name="seriesId" 
-                    value={formData.seriesId} 
-                    onChange={handleChange} 
-                    className="form-input" 
-                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
+              <div className="form-group">
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#444' }}>Series</label>
+                <select
+                  name="seriesId"
+                  value={formData.seriesId}
+                  onChange={handleChange}
+                  style={{ 
+                    width: '100%', 
+                    padding: '12px 16px', 
+                    borderRadius: '8px', 
+                    border: '1px solid #ddd', 
+                    fontSize: '1rem',
+                    background: 'rgba(255,255,255,0.8)'
+                  }}
                 >
-                    <option value="">No Series (Standalone)</option>
-                    {allSeries.map((s) => (
-                      <option key={s._id} value={s._id}>{s.title}</option>
-                    ))}
+                  <option value="">No Series (Standalone)</option>
+                  {allSeries.map((s) => (
+                    <option key={s._id} value={s._id}>{s.title}</option>
+                  ))}
                 </select>
                 <small style={{ color: '#888', fontSize: '0.85rem', marginTop: '5px', display: 'block' }}>
-                  Select a series or leave as standalone. <a href="/admin/series" style={{ color: 'var(--gold-color)' }}>Manage Series</a>
+                   Select a series or leave as standalone.
                 </small>
-                </div>
+              </div>
 
-                <div className="form-group">
-                <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Speaker</label>
-                <input 
-                    type="text" 
-                    name="speaker" 
-                    value={formData.speaker} 
-                    onChange={handleChange} 
-                    className="form-input" 
-                    placeholder="e.g. Pastor John Doe" 
-                    required 
-                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
+              <div className="form-group">
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#444' }}>Speaker</label>
+                <input
+                  type="text"
+                  name="speaker"
+                  value={formData.speaker}
+                  onChange={handleChange}
+                  placeholder="e.g. Pastor John Doe"
+                  required
+                  style={{ 
+                    width: '100%', 
+                    padding: '12px 16px', 
+                    borderRadius: '8px', 
+                    border: '1px solid #ddd', 
+                    fontSize: '1rem',
+                    background: 'rgba(255,255,255,0.8)'
+                  }}
                 />
-                </div>
-            </div>
-
-            <div className="form-group">
-               <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Date Preached</label>
-               <input 
-                 type="date" 
-                 name="date" 
-                 value={formData.date} 
-                 onChange={handleChange} 
-                 className="form-input" 
-                 required 
-                 style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
-               />
+              </div>
             </div>
 
              <div className="form-group">
-               <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Video URL (YouTube/Vimeo)</label>
-               <input 
-                 type="url" 
-                 name="videoUrl" 
-                 value={formData.videoUrl} 
-                 onChange={handleChange} 
-                 className="form-input" 
-                 placeholder="https://youtube.com/watch?v=..." 
-                 style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
+               <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#444' }}>Date Preached</label>
+               <input
+                 type="date"
+                 name="date"
+                 value={formData.date}
+                 onChange={handleChange}
+                 required
+                 style={{ 
+                   width: '100%', 
+                   padding: '12px 16px', 
+                   borderRadius: '8px', 
+                   border: '1px solid #ddd', 
+                   fontSize: '1rem',
+                   background: 'rgba(255,255,255,0.8)'
+                 }}
                />
             </div>
 
             <div className="form-group">
-               <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Thumbnail Image</label>
-               <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '10px' }}>
-                  <input 
-                    type="text" 
-                    name="imageUrl" 
-                    value={formData.imageUrl} 
-                    onChange={handleChange} 
-                    className="form-input" 
-                    placeholder="Image URL or Upload" 
-                    style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #ddd', backgroundColor: '#f9f9f9' }}
-                    readOnly
-                  />
-                  {formData.imageUrl && <img src={formData.imageUrl} alt="Preview" style={{ height: '50px', borderRadius: '4px', border: '1px solid #ddd' }} />}
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#444' }}>Video URL (YouTube/Vimeo)</label>
+              <input
+                type="url"
+                name="videoUrl"
+                value={formData.videoUrl}
+                onChange={handleChange}
+                placeholder="https://youtube.com/watch?v=..."
+                style={{ 
+                  width: '100%', 
+                  padding: '12px 16px', 
+                  borderRadius: '8px', 
+                  border: '1px solid #ddd', 
+                  fontSize: '1rem',
+                  background: 'rgba(255,255,255,0.8)'
+                }}
+              />
+            </div>
+            
+             <div className="form-group">
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#444' }}>Tags</label>
+               <div style={{ background: 'rgba(255,255,255,0.5)', padding: '4px', borderRadius: '8px' }}>
+                 <TagInput tags={formData.tags} setTags={(newTags) => setFormData({ ...formData, tags: newTags })} />
                </div>
-               
+            </div>
+          </div>
+
+          {/* Right Column */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+             <div className="glass-panel" style={{ padding: '24px', background: 'rgba(255,255,255,0.5)' }}>
+               <h4 style={{ marginTop: 0, marginBottom: '16px' }}>Publishing</h4>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                <input
+                  type="checkbox"
+                  id="isPublished"
+                  name="isPublished"
+                  checked={formData.isPublished}
+                  onChange={handleChange}
+                  style={{ width: '20px', height: '20px', accentColor: 'var(--gold-color)' }}
+                />
+                <label htmlFor="isPublished" style={{ fontSize: '1rem', fontWeight: '500' }}>
+                    Publish Immediately
+                </label>
+              </div>
+              <p style={{ fontSize: '0.85rem', color: '#666', margin: 0 }}>
+                  {formData.isPublished ? 'Visible to public' : 'Hidden draft'}
+              </p>
+            </div>
+
+            <div className="glass-panel" style={{ padding: '24px', background: 'rgba(255,255,255,0.5)' }}>
+               <h4 style={{ marginTop: 0, marginBottom: '16px' }}>Thumbnail Image</h4>
+               <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                  <input
+                    type="text"
+                    name="imageUrl"
+                    value={formData.imageUrl}
+                    onChange={handleChange}
+                    placeholder="Image URL"
+                    style={{ 
+                      flex: 1, 
+                      padding: '10px', 
+                      borderRadius: '6px', 
+                      border: '1px solid #ddd', 
+                      fontSize: '0.9rem',
+                      background: 'white'
+                    }}
+                  />
+               </div>
+                
                <input 
                  type="file" 
                  id="image-file"
-                 label="Choose File"
                  onChange={uploadFileHandler}
-                 style={{ display: 'block', width: '100%' }}
+                 style={{ display: 'block', width: '100%', fontSize: '0.9rem' }}
                />
-               {uploading && <span style={{ fontSize: '0.9rem', color: 'var(--gold-color)' }}>Uploading...</span>}
-             </div>
-
-            <div className="form-group">
-               <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Tags</label>
-               <TagInput 
-                 tags={formData.tags} 
-                 onChange={(newTags) => setFormData({ ...formData, tags: newTags })}
-               />
-               <small style={{ color: '#888', fontSize: '0.85rem', marginTop: '5px', display: 'block' }}>
-                 Press Enter to add tags. Use tags like "worship", "teaching", "testimony", etc.
-               </small>
+               
+               {formData.imageUrl && (
+                   <img src={formData.imageUrl} alt="Preview" style={{ marginTop: '10px', width: '100%', borderRadius: '8px', height: '150px', objectFit: 'cover' }} />
+               )}
             </div>
 
-            <div style={{ marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '10px', padding: '15px', background: '#f5f5f5', borderRadius: '8px' }}>
-                <input
-                    type="checkbox"
-                    id="isPublished"
-                    name="isPublished"
-                    checked={formData.isPublished}
-                    onChange={handleChange}
-                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
-                />
-                <label htmlFor="isPublished" style={{ color: '#333', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer' }}>
-                    Visible to Public (Publish)
-                </label>
-                <span style={{ fontSize: '0.85rem', color: '#666', marginLeft: '10px' }}>
-                    {formData.isPublished ? '(Will appear on sermons page)' : '(Hidden from visitors)'}
-                </span>
-            </div>
-
-            <button type="submit" className="btn-gold" style={{ marginTop: '20px' }}>{editId ? 'Update Sermon' : 'Upload Sermon'}</button>
-          
-          </form>
-        </div>
+            <button type="submit" className="btn-gold" style={{ width: '100%', padding: '14px', fontSize: '1.1rem', marginTop: '10px' }}>
+              {editId ? 'Update Sermon' : 'Create Sermon'}
+            </button>
+            
+             {editId && (
+                <div style={{ marginTop: '20px' }}>
+                    <RevisionHistory documentId={editId} type="sermon" />
+                </div>
+            )}
+          </div>
+        </form>
+      </div>
       </div>
     </div>
   );

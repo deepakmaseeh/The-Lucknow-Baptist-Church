@@ -45,13 +45,15 @@ router.get('/slug/:slug', asyncHandler(async (req, res) => {
 // @route   POST /api/pages
 // @access  Private
 router.post('/', protect, asyncHandler(async (req, res) => {
-    const { title, slug, blocks, status } = req.body;
+    const { title, slug, blocks, status, featuredImage, metaDescription } = req.body;
 
     const page = await Page.create({
         title,
         slug,
         blocks: blocks || [],
         status: status || 'draft',
+        featuredImage: featuredImage || '',
+        metaDescription: metaDescription || '',
         createdBy: req.user._id
     });
 
@@ -69,6 +71,8 @@ router.put('/:id', protect, asyncHandler(async (req, res) => {
         page.slug = req.body.slug || page.slug;
         page.blocks = req.body.blocks || page.blocks;
         page.status = req.body.status || page.status;
+        if (req.body.featuredImage !== undefined) page.featuredImage = req.body.featuredImage;
+        if (req.body.metaDescription !== undefined) page.metaDescription = req.body.metaDescription;
 
         if (req.body.status === 'published' && !page.publishedAt) {
             page.publishedAt = new Date();

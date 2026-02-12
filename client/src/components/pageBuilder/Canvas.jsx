@@ -11,6 +11,8 @@ function Canvas({ blocks, selectedBlock, onSelectBlock, onUpdateProps, onDeleteB
     mobile: '375px'
   };
 
+  const [hoveredId, setHoveredId] = React.useState(null);
+
   if (blocks.length === 0) {
     return (
       <div style={{
@@ -57,14 +59,15 @@ function Canvas({ blocks, selectedBlock, onSelectBlock, onUpdateProps, onDeleteB
     <div style={{
       flex: 1,
       background: 'linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%)',
-      padding: '50px 30px',
+      padding: '20px 0',
       overflowY: 'auto',
       display: 'flex',
       justifyContent: 'center'
     }}>
       <div style={{
         width: deviceWidths[deviceMode],
-        maxWidth: deviceMode === 'desktop' ? '1200px' : deviceWidths[deviceMode],
+        maxWidth: deviceMode === 'desktop' ? '100%' : deviceWidths[deviceMode],
+        margin: deviceMode === 'desktop' ? '0 40px' : '0',
         background: 'white',
         minHeight: '700px',
         boxShadow: '0 8px 40px rgba(0,0,0,0.12)',
@@ -78,6 +81,9 @@ function Canvas({ blocks, selectedBlock, onSelectBlock, onUpdateProps, onDeleteB
             key={block.id}
             block={block}
             isSelected={selectedBlock?.id === block.id}
+            isHovered={hoveredId === block.id}
+            onHover={() => setHoveredId(block.id)}
+            onLeave={() => setHoveredId(null)}
             onSelect={() => onSelectBlock(block)}
             onUpdateProps={onUpdateProps}
             onDelete={() => onDeleteBlock(block.id)}
@@ -88,7 +94,7 @@ function Canvas({ blocks, selectedBlock, onSelectBlock, onUpdateProps, onDeleteB
   );
 }
 
-function SortableBlock({ block, isSelected, onSelect, onUpdateProps, onDelete }) {
+function SortableBlock({ block, isSelected, isHovered, onHover, onLeave, onSelect, onUpdateProps, onDelete }) {
   const {
     attributes,
     listeners,
@@ -100,19 +106,26 @@ function SortableBlock({ block, isSelected, onSelect, onUpdateProps, onDelete })
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    position: 'relative'
+    position: 'relative',
+    zIndex: isSelected ? 10 : (isHovered ? 5 : 1)
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes}>
+    <div 
+      ref={setNodeRef} 
+      style={style} 
+      {...attributes}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+    >
       <div
         onClick={onSelect}
         style={{
-          outline: isSelected ? '3px solid #D4AF37' : 'none',
-          outlineOffset: '-3px',
+          outline: isSelected ? '2px solid #D4AF37' : (isHovered ? '2px solid rgba(212, 175, 55, 0.4)' : 'none'),
+          outlineOffset: '-2px',
           position: 'relative',
           cursor: 'pointer',
-          transition: 'outline 0.2s'
+          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
         {isSelected && (

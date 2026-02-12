@@ -7,6 +7,7 @@ import Button from './Button';
 import Spacer from './Spacer';
 import Divider from './Divider';
 import Columns from './Columns';
+import Form from './Form';
 
 function BlockRenderer({ block, onUpdateProps }) {
   const components = {
@@ -17,7 +18,8 @@ function BlockRenderer({ block, onUpdateProps }) {
     button: Button,
     spacer: Spacer,
     divider: Divider,
-    columns: Columns
+    columns: Columns,
+    form: Form
   };
 
   const Component = components[block.type];
@@ -32,3 +34,4 @@ function BlockRenderer({ block, onUpdateProps }) {
 }
 
 export default BlockRenderer;
+
