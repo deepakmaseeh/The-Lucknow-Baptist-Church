@@ -13,6 +13,7 @@ import revisionRoutes from './routes/revisionRoutes.js';
 import workflowRoutes from './routes/workflowRoutes.js';
 import podcastRoutes from './routes/podcastRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
+import pageRoutes from './routes/pageRoutes.js';
 import siteConfigRoutes from './routes/siteConfigRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import { getSitemap } from './controllers/sitemapController.js';
@@ -56,6 +57,7 @@ app.use('/api/revisions', revisionRoutes);
 app.use('/api/workflow', workflowRoutes);
 app.use('/api/podcast', podcastRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/pages', pageRoutes);
 app.use('/api/settings', siteConfigRoutes);
 app.use('/api/upload', uploadRoutes);
 

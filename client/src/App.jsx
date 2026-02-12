@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './context/AuthContext';
 import { SiteConfigProvider } from './context/SiteConfigContext';
+import { SidebarProvider } from './context/SidebarContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import ScrollToTop from './components/ScrollToTop';
@@ -32,6 +33,7 @@ import PodcastSettings from './pages/admin/PodcastSettings';
 import AdminLayout from './components/admin/AdminLayout';
 import Appearance from './pages/admin/Appearance';
 import Analytics from './pages/admin/Analytics';
+import PageBuilder from './pages/admin/PageBuilder';
 
 import './index.css';
 
@@ -44,9 +46,10 @@ function App() {
     <HelmetProvider>
       <AuthProvider>
         <SiteConfigProvider>
-        <Router>
-          <ScrollToTop />
-          <BackToTop />
+          <SidebarProvider>
+            <Router>
+              <ScrollToTop />
+              <BackToTop />
           <div className="app-container">
             <Routes>
               {/* Public Routes (Wrapped in Navbar) */}
@@ -159,6 +162,16 @@ function App() {
                 } 
               />
               <Route 
+                path="/admin/pages" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                        <PageBuilder />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
                 path="/admin/appearance" 
                 element={
                   <ProtectedRoute>
@@ -173,11 +186,11 @@ function App() {
             </Routes>
           </div>
         </Router>
+      </SidebarProvider>
       </SiteConfigProvider>
     </AuthProvider>
     </HelmetProvider>
   );
 }
-
 
 export default App;
